@@ -1,11 +1,23 @@
+// server/index.js
+require('dotenv').config(); // Load environment variables
 const express = require('express');
-const app = express();
+const cors = require('cors');
+const authRoutes = require('./routes/auth'); // Import our new auth routes
 
-// Use a port like 3001 to avoid conflicts
-// React Native often uses 3000 or 8081
+const app = express();
 const PORT = process.env.PORT || 3001;
 
-// A simple test route
+// --- Middleware ---
+// 1. Enable CORS for all requests
+app.use(cors());
+// 2. Enable built-in middleware to parse JSON request bodies
+app.use(express.json());
+
+// --- Routes ---
+// Mount our auth routes on the /api/auth path
+app.use('/api/auth', authRoutes);
+
+// Original test route
 app.get('/api', (req, res) => {
   res.json({ message: "Hello from the AI Question Checker API!" });
 });
