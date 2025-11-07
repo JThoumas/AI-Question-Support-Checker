@@ -8,6 +8,10 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const db = require('../db'); // Import our database connection
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client();
+const jwksClient = require('jwks-rsa'); // <-- ADD THIS
+const appleJwksClient = jwksClient({ // <-- ADD THIS
+  jwksUri: 'https://appleid.apple.com/auth/keys'
+});
 
 const router = express.Router();
 
@@ -329,6 +333,84 @@ router.post('/google-login', async (req, res) => {
   } catch (error) {
     console.error('Google login error:', error);
     res.status(401).json({ error: 'Invalid Google token' });
+  }
+});
+
+// Helper function to get Apple's public key
+function getAppleSigningKey(header, callback) {
+  appleJwksClient.getSigningKey(header.kid, (err, key) => {
+    if (err) {
+      callback(err);
+      return;
+    }
+    const signingKey = key.getPublicKey();
+    callback(null, signingKey);
+  });
+}
+
+// POST /api/auth/apple-login
+router.post('/apple-login', async (req, res) => {
+  const { idToken, fullName } = req.body;
+
+  try {
+    // 1. Verify the Apple token
+    // We use jwt.verify with our helper function to get the key
+    jwt.verify(idToken, getAppleSigningKey, {
+      audience: 'org.reactjs.native.example.MobileApp',
+      issuer: 'https://appleid.apple.com',
+      algorithms: ['RS256']
+    }, async (err, decoded) => {
+      if (err) {
+        console.error('Apple token verification error:', err);
+        return res.status(401).json({ error: 'Invalid Apple token' });
+      }
+
+      const email = decoded.email;
+      // Apple only gives the name on the VERY FIRST login
+      const username = fullName ? `${fullName.givenName} ${fullName.familyName}` : 'Apple User';
+
+      if (!email) {
+        return res.status(400).json({ error: 'Email not found in Apple token' });
+      }
+
+      // 2. Check if this user already exists in our database
+      let { rows } = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+      let user = rows[0];
+
+      if (!user) {
+        // 3. If user doesn't exist, create a new one
+        const salt = await bcrypt.genSalt(10);
+        const password_hash = await bcrypt.hash(crypto.randomBytes(20).toString('hex'), salt);
+
+        const result = await db.query(
+          'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING *',
+          [username, email, password_hash]
+        );
+        user = result.rows[0];
+      }
+
+      // 4. Create *our* JWT for the user
+      const appTokenPayload = {
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        },
+      };
+
+      jwt.sign(
+        appTokenPayload,
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' },
+        (appErr, token) => {
+          if (appErr) throw appErr;
+          res.json({ token }); // Send our token back
+        }
+      );
+    });
+  } catch (error) {
+    console.error('Apple login error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
