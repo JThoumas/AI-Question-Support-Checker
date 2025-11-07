@@ -3,8 +3,11 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const db = require('../db'); // Import our database connection
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client();
 
 const router = express.Router();
 
@@ -145,11 +148,31 @@ router.post('/forgot-password', async (req, res) => {
     `;
     await db.query(updateQuery, [code, expires, user.id]);
 
-    // 6. TODO: Send the email. For now, we'll just log it.
-    console.log('--- PASSWORD RESET ---');
-    console.log(`User: ${user.email}`);
-    console.log(`Code: ${code}`);
-    console.log('----------------------');
+    // 6. Send the email using SendGrid
+    try {
+      const msg = {
+        to: user.email,
+        from: process.env.SENDER_EMAIL, // Your verified email
+        subject: 'Your Password Reset Code',
+        html: `
+          <div style="font-family: sans-serif; text-align: center;">
+            <h2>Password Reset Request</h2>
+            <p>We received a request to reset your password.</p>
+            <p>Here is your 6-digit verification code:</p>
+            <h1 style="font-size: 48px; letter-spacing: 10px; margin: 20px 0;">
+              ${code}
+            </h1>
+            <p style="color: #888;">This code will expire in 15 minutes.</p>
+          </div>
+        `,
+      };
+
+    await sgMail.send(msg);
+
+    } catch (emailError) {
+      console.error('Failed to send email:', emailError);
+      // Even if email fails, we don't want to tell the user
+    }
 
     // 7. Send the same generic success message
     res.status(200).json({ message: 'If an account with that email exists, a password reset code has been sent.' });
@@ -245,6 +268,67 @@ router.post('/reset-password', async (req, res) => {
   } catch (error) {
     console.error('Reset password error:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/auth/google-login
+router.post('/google-login', async (req, res) => {
+  const { idToken } = req.body; // This is the token from the React Native app
+
+  try {
+    // 1. Verify the Google token
+    const ticket = await client.verifyIdToken({
+      idToken: idToken,
+      // We'll need to set this Client ID in our .env file
+      audience: process.env.GOOGLE_CLIENT_ID, 
+    });
+    const payload = ticket.getPayload();
+
+    const email = payload.email;
+    const username = payload.name; // Or payload.given_name
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email not found in Google token' });
+    }
+
+    // 2. Check if this user already exists in our database
+    let { rows } = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    let user = rows[0];
+
+    if (!user) {
+      // 3. If user doesn't exist, create a new one
+      // We create a "dummy" password hash since they won't log in this way
+      const salt = await bcrypt.genSalt(10);
+      const password_hash = await bcrypt.hash(crypto.randomBytes(20).toString('hex'), salt);
+
+      const result = await db.query(
+        'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING *',
+        [username, email, password_hash]
+      );
+      user = result.rows[0];
+    }
+
+    // 4. Create *our* JWT for the user
+    const appTokenPayload = {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    };
+
+    jwt.sign(
+      appTokenPayload,
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token }); // Send our token back
+      }
+    );
+  } catch (error) {
+    console.error('Google login error:', error);
+    res.status(401).json({ error: 'Invalid Google token' });
   }
 });
 
