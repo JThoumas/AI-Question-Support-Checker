@@ -279,14 +279,24 @@ router.post('/reset-password', async (req, res) => {
 router.post('/google-login', async (req, res) => {
   const { idToken } = req.body; // This is the token from the React Native app
 
+  console.log('=== GOOGLE LOGIN DEBUG ===');
+  console.log('Received idToken:', idToken ? `${idToken.substring(0, 50)}...` : 'MISSING');
+  console.log('Expected audience (GOOGLE_CLIENT_ID):', process.env.GOOGLE_CLIENT_ID);
+
   try {
     // 1. Verify the Google token
     const ticket = await client.verifyIdToken({
       idToken: idToken,
       // We'll need to set this Client ID in our .env file
-      audience: process.env.GOOGLE_CLIENT_ID, 
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
+    
+    console.log('Token verified successfully!');
+    console.log('Token audience:', payload.aud);
+    console.log('Token issuer:', payload.iss);
+    console.log('User email:', payload.email);
+    console.log('User name:', payload.name);
 
     const email = payload.email;
     const username = payload.name; // Or payload.given_name
@@ -331,8 +341,11 @@ router.post('/google-login', async (req, res) => {
       }
     );
   } catch (error) {
-    console.error('Google login error:', error);
-    res.status(401).json({ error: 'Invalid Google token' });
+    console.error('=== GOOGLE LOGIN ERROR ===');
+    console.error('Error type:', error.constructor.name);
+    console.error('Error message:', error.message);
+    console.error('Full error:', error);
+    res.status(401).json({ error: 'Invalid Google token', details: error.message });
   }
 });
 
@@ -352,6 +365,11 @@ function getAppleSigningKey(header, callback) {
 router.post('/apple-login', async (req, res) => {
   const { idToken, fullName } = req.body;
 
+  console.log('=== APPLE LOGIN DEBUG ===');
+  console.log('Received idToken:', idToken ? `${idToken.substring(0, 50)}...` : 'MISSING');
+  console.log('Received fullName:', fullName);
+  console.log('Expected audience:', 'org.reactjs.native.example.MobileApp');
+
   try {
     // 1. Verify the Apple token
     // We use jwt.verify with our helper function to get the key
@@ -361,9 +379,18 @@ router.post('/apple-login', async (req, res) => {
       algorithms: ['RS256']
     }, async (err, decoded) => {
       if (err) {
-        console.error('Apple token verification error:', err);
-        return res.status(401).json({ error: 'Invalid Apple token' });
+        console.error('=== APPLE TOKEN VERIFICATION ERROR ===');
+        console.error('Error type:', err.constructor.name);
+        console.error('Error message:', err.message);
+        console.error('Full error:', err);
+        return res.status(401).json({ error: 'Invalid Apple token', details: err.message });
       }
+
+      console.log('Apple token verified successfully!');
+      console.log('Decoded token:', decoded);
+      console.log('Token audience:', decoded.aud);
+      console.log('Token issuer:', decoded.iss);
+      console.log('User email:', decoded.email);
 
       const email = decoded.email;
       // Apple only gives the name on the VERY FIRST login
@@ -409,8 +436,11 @@ router.post('/apple-login', async (req, res) => {
       );
     });
   } catch (error) {
-    console.error('Apple login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('=== APPLE LOGIN OUTER ERROR ===');
+    console.error('Error type:', error.constructor.name);
+    console.error('Error message:', error.message);
+    console.error('Full error:', error);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 });
 
