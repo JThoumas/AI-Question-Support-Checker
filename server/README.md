@@ -51,7 +51,6 @@ Registers a new user.
     "email": "user@example.com",
     "password": "password123"
   }
-  ```json
 - **Success Response (201 Created):**
   ```json
   {
@@ -60,14 +59,11 @@ Registers a new user.
     "email": "user@example.com",
     "created_at": "2025-11-01T16:30:00.000Z"
   }
-  ```json
 - **Error Response (409 Conflict):**
   ```json
   {
     "error": "Username or email already exists."
   }
-  ```json
-
 ### 2. User Login
 Logs in an existing user and returns a JSON Web Token (JWT).
 - **Route:** `POST /api/auth/login`
@@ -77,20 +73,16 @@ Logs in an existing user and returns a JSON Web Token (JWT).
     "login": "newuser", // Can be username or email
     "password": "password123"
   }
-  ```json
 - **Success Response (200 OK):**
   ```json
   {
     "token": "eyJhbGciOiJIuzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6Im5ld3VzZXIifSwiaWF0IjoxNzEwOTU4MzgwLCJleHAiOjE3MTA5NjE5ODB9.abcdef..."
   }
-  ```json
 - **Error Response (401 Unauthorized):**
   ```json
   {
     "error": "Invalid credentials."
   }
-  ```json
-
 ### 3. Forgot Password
 Registers a new user.
 - **Route:** `POST /api/auth/forgot-password`
@@ -99,14 +91,11 @@ Registers a new user.
   {
     "email": "user@example.com"
   }
-  ```json
 - **Success Response (200 OK):**
   ```json
   {
     "message": "If an account with that email exists, a password reset code has been sent."
   }
-  ```json
-
 ### 4. Verify Code
 Registers a new user.
 - **Route:** `POST /api/auth/verify-code`
@@ -116,20 +105,16 @@ Registers a new user.
     "email": "user@example.com",
     "code": "123456"
   }
-  ```json
 - **Success Response (200 OK):**
   ```json
   {
     "message": "Code is valid."
   }
-  ```json
 - **Error Response (400 Bad Request):**
   ```json
   {
     "error": "Code has expired. Please request a new one."
   }
-  ```json
-
 ### 5. Reset Password
 Registers a new user.
 - **Route:** `POST /api/auth/reset-password`
@@ -140,10 +125,8 @@ Registers a new user.
     "code": "123456",
     "newPassword": "myNewSecurePassword"
   }
-  ```json
 - **Success Response (200 OK):**
   ```json
   {
     "message": "Password has been reset successfully."
   }
-  ```json
