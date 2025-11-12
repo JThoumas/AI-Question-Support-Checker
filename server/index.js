@@ -8,6 +8,9 @@ console.log("Loaded key:", process.env.OPENAI_API_KEY ? "✅ Found" : "❌ Not f
 
 // --- MODULE IMPORTS ---
 const express = require('express');
+const cors = require('cors');
+const authRoutes = require('./routes/auth'); // Import our new auth routes
+
 const { OpenAI } = require('openai'); 
 
 // 2. INITIALIZE CLIENT
@@ -27,14 +30,19 @@ if (process.env.OPENAI_API_KEY) {
 
 const app = express();
 
-// 3. MIDDLEWARE
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true }));
+// 3. MIDDLEWARE (Consolidated and in logical order)
+// 1. Enable CORS first for all requests
+app.use(cors());
 
+// 2. Enable built-in middleware to parse incoming request bodies
+app.use(express.json()); // To parse application/json
+app.use(express.urlencoded({ extended: true })); // To parse application/x-www-form-urlencoded
+
+// 3. Custom logging middleware (Always comes after body parsers)
 app.use((req, res, next) => {
     if (req.method === 'POST') {
         console.log(`Incoming ${req.method} ${req.url} - content-type:`, req.headers['content-type']);
-        // Show the parsed body (may be undefined if parsing failed)
+        // Show the parsed body
         console.log('Parsed body:', req.body);
     }
     next();
@@ -42,8 +50,11 @@ app.use((req, res, next) => {
 
 const PORT = process.env.PORT || 3001;
 
-// --- ROUTE DEFINITIONS ---
+// --- Routes ---
+// Mount our auth routes on the /api/auth path
+app.use('/api/auth', authRoutes);
 
+// Original test route
 app.get('/api', (req, res) => {
     res.json({ message: "Hello from the AI Question Checker API!" });
 });
