@@ -1,6 +1,86 @@
 {
-  "users": [],
-  "posts": [],
-  "comments": []
-}
+  "users": [
+    {
+      "id": 1,
+      "username": "sophia",
+      "email": "sophia@example.com"
+    },
+    {
+      "id": 2,
+      "username": "daniel",
+      "email": "daniel@example.com"
+    },
+    {
+      "id": 3,
+      "username": "maya",
+      "email": "maya@example.com"
+    }
+  ],
 
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "text": "How do I get better at solving algorithm problems? I freeze when the question looks long.",
+      "category": "Computer Science",
+      "keywords": ["algorithms", "problem solving", "practice"],
+      "aiSummary": "",
+      "upvotes": 18,
+      "downvotes": 2,
+      "createdAt": "2025-01-10T14:32:00.000Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "text": "Best way to prepare for a finance internship if I don’t have experience?",
+      "category": "Finance",
+      "keywords": ["internship", "resume", "experience"],
+      "aiSummary": "",
+      "upvotes": 9,
+      "downvotes": 1,
+      "createdAt": "2025-01-12T09:15:00.000Z"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "text": "Should I switch majors from biology to data science? I like math but not labs.",
+      "category": "Career",
+      "keywords": ["data science", "biology", "majors"],
+      "aiSummary": "",
+      "upvotes": 25,
+      "downvotes": 3,
+      "createdAt": "2025-01-15T18:00:00.000Z"
+    }
+  ],
+
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "author": "ethan",
+      "content": "Try solving easier problems first. The confidence builds up.",
+      "createdAt": "2025-01-10T15:10:00.000Z"
+    },
+    {
+      "id": 2,
+      "postId": 1,
+      "author": "zoe",
+      "content": "Patterns matter more than difficulty. Recognize them.",
+      "createdAt": "2025-01-10T16:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "postId": 2,
+      "author": "liam",
+      "content": "Focus on Excel, basic accounting, and talking to alumni.",
+      "createdAt": "2025-01-12T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "postId": 3,
+      "author": "noah",
+      "content": "Data science has more career options if you like math.",
+      "createdAt": "2025-01-15T19:20:00.000Z"
+    }
+  ]
+}
