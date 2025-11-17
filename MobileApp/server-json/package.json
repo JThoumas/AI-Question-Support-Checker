@@ -1,0 +1,13 @@
+{
+  "name": "server-json",
+  "version": "1.0.0",
+  "description": "Mock JSON server for posts and comments",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}

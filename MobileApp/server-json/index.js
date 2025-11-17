@@ -14,16 +14,11 @@ app.use('/comments', commentsRoute);
 
 const PORT = 3005;
 app.listen(PORT, () => {
-  console.log(`JSON server running at http://localhost:${PORT}`);
+  console.log(`🚀 JSON server running at http://localhost:${PORT}`);
+  console.log(`📡 Available endpoints:`);
+  console.log(`   - GET  /posts`);
+  console.log(`   - POST /posts`);
+  console.log(`   - POST /posts/:id/vote`);
+  console.log(`   - GET  /comments?postId=<id>`);
+  console.log(`   - POST /comments`);
 });
-
-const fs = require('fs');
-const path = require('path');
-
-module.exports = function loadDB() {
-  const filePath = path.join(__dirname, '..', 'data.json');
-  const raw = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(raw);
-};
-
-

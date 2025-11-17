@@ -16,71 +16,134 @@
       "email": "maya@example.com"
     }
   ],
-
   "posts": [
     {
       "id": 1,
-      "userId": 1,
-      "text": "How do I get better at solving algorithm problems? I freeze when the question looks long.",
-      "category": "Computer Science",
-      "keywords": ["algorithms", "problem solving", "practice"],
-      "aiSummary": "",
+      "author": "sophia",
+      "question": "How do I get better at solving algorithm problems? I freeze when the question looks long.",
+      "summary": "Quick AI Summary:\n\nTo improve at solving algorithm problems, start by breaking down complex questions into smaller, manageable parts. Practice regularly with easier problems first to build confidence and pattern recognition. Focus on understanding the underlying concepts rather than memorizing solutions. Use resources like LeetCode, HackerRank, or Codewars to practice consistently. When you encounter a long problem, read it carefully, identify the key requirements, and sketch out your approach before coding. Remember, persistence and consistent practice are key to overcoming the initial freeze response.",
+      "keywords": [
+        "algorithms",
+        "problem solving",
+        "practice"
+      ],
       "upvotes": 18,
       "downvotes": 2,
+      "comments": [],
       "createdAt": "2025-01-10T14:32:00.000Z"
     },
     {
       "id": 2,
-      "userId": 2,
-      "text": "Best way to prepare for a finance internship if I don’t have experience?",
-      "category": "Finance",
-      "keywords": ["internship", "resume", "experience"],
-      "aiSummary": "",
+      "author": "daniel",
+      "question": "Best way to prepare for a finance internship if I don't have experience?",
+      "summary": "Quick AI Summary:\n\nTo prepare for a finance internship without prior experience, focus on building foundational knowledge through online courses in financial modeling, Excel, and basic accounting. Network with professionals on LinkedIn and attend finance-related events. Develop a strong resume highlighting transferable skills like analytical thinking, attention to detail, and any relevant coursework. Consider obtaining certifications like Bloomberg Market Concepts (BMC) or Excel certifications. Practice common interview questions and stay updated on financial news. Demonstrate enthusiasm and willingness to learn during interviews.",
+      "keywords": [
+        "internship",
+        "resume",
+        "experience"
+      ],
       "upvotes": 9,
       "downvotes": 1,
+      "comments": [],
       "createdAt": "2025-01-12T09:15:00.000Z"
     },
     {
       "id": 3,
-      "userId": 3,
-      "text": "Should I switch majors from biology to data science? I like math but not labs.",
-      "category": "Career",
-      "keywords": ["data science", "biology", "majors"],
-      "aiSummary": "",
+      "author": "maya",
+      "question": "Should I switch majors from biology to data science? I like math but not labs.",
+      "summary": "Quick AI Summary:\n\nSwitching from biology to data science could be a great fit if you enjoy math and prefer computational work over lab experiments. Data science combines mathematical analysis, programming, and problem-solving, which aligns well with your interests. Consider taking introductory data science courses while still in biology to test the waters. Research career paths in both fields and talk to professionals in data science. You could also explore bioinformatics, which bridges both fields. Make sure to evaluate job prospects, required skills, and your long-term career goals before making the switch.",
+      "keywords": [
+        "data science",
+        "biology",
+        "majors"
+      ],
       "upvotes": 25,
       "downvotes": 3,
+      "comments": [],
       "createdAt": "2025-01-15T18:00:00.000Z"
+    },
+    {
+      "id": 1763408405471,
+      "author": "You",
+      "question": "What is the best job for CS major?",
+      "summary": "**Quick AI Summary:**\nAs a Computer Science major, your career options are vast and exciting. Consider roles like software developer, data scientist, cybersecurity analyst, or IT consultant. To find the best job for you, reflect on your interests, skills, and values. Explore internships, projects, or research opportunities to gain practical experience. Network with professionals in your field and seek mentorship to guide your career path. Keep learning and adapting to new technologies to stay competitive. Remember, the best job is one that aligns with your passions and offers opportunities for growth. Embrace challenges, be proactive in your career development, and never stop exploring new possibilities. Good luck on your journey to finding the perfect job as a CS major!",
+      "keywords": [],
+      "upvotes": 0,
+      "downvotes": 0,
+      "comments": [],
+      "createdAt": "2025-11-17T19:40:05.471Z"
+    },
+    {
+      "id": 1763408591721,
+      "author": "You",
+      "question": "What are good CS opportunities",
+      "summary": "**Quick AI Summary:**\nWhen it comes to Computer Science opportunities, internships are fantastic for gaining practical experience. Look for internships at tech companies, startups, or research institutions. Additionally, consider participating in hackathons, coding competitions, or open-source projects to enhance your skills and network. Networking events, career fairs, and online platforms like LinkedIn can help you connect with professionals in the field. Remember to build a strong portfolio showcasing your projects and skills. Lastly, don't underestimate the power of continuous learning through online courses, workshops, and certifications to stay updated with the latest trends in CS. Keep exploring, learning, and networking to unlock exciting opportunities in the vast field of Computer Science!",
+      "keywords": [
+        "Internships"
+      ],
+      "upvotes": 3,
+      "downvotes": 1,
+      "comments": [],
+      "createdAt": "2025-11-17T19:43:11.721Z"
+    },
+    {
+      "id": 1763409943767,
+      "author": "You",
+      "question": "What are good opportunities in the CS field for the next 5 years?",
+      "summary": "**Quick AI Summary:**\nIn the rapidly evolving field of Computer Science (CS), there are abundant opportunities awaiting you in the next 5 years. To capitalize on this growth, consider the following key areas: \n\n1. **Artificial Intelligence (AI) and Machine Learning**: Upskill in these domains to stay ahead in developing innovative solutions.\n  \n2. **Cybersecurity**: With the rise in cyber threats, experts in cybersecurity will be in high demand.\n  \n3. **Data Science and Analytics**: Master data analysis to derive valuable insights from vast datasets.\n\n4. **Cloud Computing**: Acquire skills in cloud technologies to support businesses' digital transformations.\n\nTo position yourself for success, engage in **internships** in your chosen field to gain practical experience and build a strong professional network. **Networking** with industry professionals through events, online platforms, and informational interviews can open doors to exciting opportunities. Stay curious, continue learning, and adapt to new technologies to thrive in the dynamic CS landscape ahead.",
+      "keywords": [
+        "Internships",
+        "Networking"
+      ],
+      "upvotes": 2,
+      "downvotes": 1,
+      "comments": [
+        {
+          "id": 1763410019082,
+          "postId": 1763409943767,
+          "author": "You",
+          "text": "Hi",
+          "createdAt": "2025-11-17T20:06:59.082Z"
+        }
+      ],
+      "createdAt": "2025-11-17T20:05:43.767Z"
     }
   ],
-
   "comments": [
     {
       "id": 1,
       "postId": 1,
       "author": "ethan",
-      "content": "Try solving easier problems first. The confidence builds up.",
+      "text": "Try solving easier problems first. The confidence builds up.",
       "createdAt": "2025-01-10T15:10:00.000Z"
     },
     {
       "id": 2,
       "postId": 1,
       "author": "zoe",
-      "content": "Patterns matter more than difficulty. Recognize them.",
+      "text": "Patterns matter more than difficulty. Recognize them.",
       "createdAt": "2025-01-10T16:30:00.000Z"
     },
     {
       "id": 3,
       "postId": 2,
       "author": "liam",
-      "content": "Focus on Excel, basic accounting, and talking to alumni.",
+      "text": "Focus on Excel, basic accounting, and talking to alumni.",
       "createdAt": "2025-01-12T10:00:00.000Z"
     },
     {
       "id": 4,
       "postId": 3,
       "author": "noah",
-      "content": "Data science has more career options if you like math.",
+      "text": "Data science has more career options if you like math.",
       "createdAt": "2025-01-15T19:20:00.000Z"
+    },
+    {
+      "id": 1763410019082,
+      "postId": 1763409943767,
+      "author": "You",
+      "text": "Hi",
+      "createdAt": "2025-11-17T20:06:59.082Z"
     }
   ]
 }

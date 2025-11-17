@@ -1,35 +1,30 @@
 // server/index.js
 
 // 1. ENVIRONMENT/SECURITY SETUP
-// Load environment variables from BOTH locations to ensure all keys are available
-// First load from server/.env (for auth-related keys like SENDGRID, JWT_SECRET, etc.)
-require('dotenv').config();
-// Then load from root .env (for OPENAI_API_KEY)
+// This loads the secret variables from the .env file into process.env
 require('dotenv').config({ path: '../.env' });
+console.log("Loaded key:", process.env.OPENAI_API_KEY ? "✅ Found" : "❌ Not found");
 
-console.log("Loaded OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "✅ Found" : "❌ Not found");
-console.log("Loaded SENDGRID_API_KEY:", process.env.SENDGRID_API_KEY ? "✅ Found" : "❌ Not found");
 
 // --- MODULE IMPORTS ---
 const express = require('express');
 const cors = require('cors');
-const authRoutes = require('./routes/auth'); // Import our auth routes
+const authRoutes = require('./routes/auth'); // Import our new auth routes
 
 const { OpenAI } = require('openai'); 
 
-// 2. INITIALIZE OPENAI CLIENT
+// 2. INITIALIZE CLIENT
 let openai = null;
 let useMockAI = false;
 if (process.env.OPENAI_API_KEY) {
     try {
         openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-        console.log("✅ OpenAI client initialized successfully");
     } catch (err) {
         console.error('Failed to initialize OpenAI client:', err.message);
         useMockAI = true;
     }
 } else {
-    console.warn('⚠️  OPENAI_API_KEY not found. The server will run, but AI calls will be mocked.');
+    console.warn('OPENAI_API_KEY not found. The server will run, but AI calls will be mocked.');
     useMockAI = true;
 }
 
@@ -131,15 +126,5 @@ app.post('/api/generate-answer', async (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
-    console.log(`📡 Available endpoints:`);
-    console.log(`   - GET  /api (test endpoint)`);
-    console.log(`   - POST /api/auth/signup`);
-    console.log(`   - POST /api/auth/login`);
-    console.log(`   - POST /api/auth/google-login`);
-    console.log(`   - POST /api/auth/apple-login`);
-    console.log(`   - POST /api/auth/forgot-password`);
-    console.log(`   - POST /api/auth/verify-code`);
-    console.log(`   - POST /api/auth/reset-password`);
-    console.log(`   - POST /api/generate-answer (AI functionality)`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -44,8 +44,8 @@ const HomeScreen = () => {
 
   const JSON_SERVER_BASE_URL =
     Platform.OS === 'ios'
-      ? 'http://localhost:4000/api'
-      : 'http://10.0.2.2:4000/api';
+      ? 'http://localhost:3005'
+      : 'http://10.0.2.2:3005';
 
   useEffect(() => {
     fetchPosts();

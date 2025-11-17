@@ -20,4 +20,7 @@ const JSON_URL_ANDROID = 'http://10.0.2.2:3005';
 
 const JSON_SERVER_API = Platform.OS === 'ios' ? JSON_URL_IOS : JSON_URL_ANDROID;
 
+// Default export for backward compatibility (used in LoginScreen)
+export default AUTH_API;
+
 export { AUTH_API, AI_API, JSON_SERVER_API };
